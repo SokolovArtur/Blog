@@ -1,0 +1,25 @@
+﻿@model Blog.Models.Tags
+
+@{
+    ViewBag.Title = "Тег";
+}
+
+<h1>Тег</h1>
+
+<div class="toolbar">
+    @if (User.IsInRole("admin")) {
+        @Html.ActionLink("Редактировать", "Edit", new { id = Model.Id }, new { @class = "button" })
+    }
+    @if (Model.Posts.Count == 0) {
+        @Html.ActionLink("Удалить", "Delete", new { id = Model.Id }, new { @class = "button danger" })
+    }
+</div>
+
+<div class="row">
+    <dl class="horizontal">
+        <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd>@Html.DisplayFor(model => model.Name)</dd>
+    </dl>
+</div>
+
+@Html.ActionLink("Назад", "Index", null, new { @class = "button link" })

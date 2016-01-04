@@ -1,0 +1,67 @@
+﻿@using Microsoft.AspNet.Identity;
+
+@model IEnumerable<Blog.Models.Posts>
+
+@{
+    ViewBag.Title = "Посты";
+}
+
+<h1>Посты</h1>
+
+<div class="toolbar">
+    @Html.ActionLink("Создать", "Create", null, new { @class = "button" }) 
+</div>
+
+<table class="table bordered hovered" data-role="datatable">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Id)</th>
+            <th>@Html.DisplayNameFor(model => model.Date)</th>
+            <th>@Html.DisplayNameFor(model => model.Title)</th>
+            <th>@Html.DisplayNameFor(model => model.User)</th>
+            <th>@Html.DisplayNameFor(model => model.Tags)</th>
+            <th>@Html.DisplayNameFor(model => model.Comments)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                <td>@Html.DisplayFor(modelItem => item.User.FullName)</td>
+                <td>
+                    @{
+                        // Список тегов
+                        List<string> tagNames = new List<string>();
+                        foreach (var i in item.Tags) {
+                            tagNames.Add(i.Name);
+                        }
+                    }
+                    @string.Join(", ", tagNames)
+                </td>
+                <td>
+                    @{
+                        // Если есть комментарии, то выводим ссылку
+                        int countComments = item.Comments.Count;
+                        if (countComments > 0) {
+                            @Html.RouteLink(
+                                countComments.ToString() + " " + ((countComments == 1) ? "comment" : "comments"),
+                                "Admin_default",
+                                new { controller = "Comments", action = "Post", id = item.Id }
+                            )
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "mif-eye", title = "Просмотреть" })
+                    @if ((User.IsInRole("editor") && (item.User.Id == User.Identity.GetUserId())) || User.IsInRole("admin")) {
+                        @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "mif-pencil", title = "Редактировать" })
+                        @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "mif-bin", title = "Удалить" })
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,73 @@
+﻿@using Blog.Models
+
+@model Posts
+
+@{
+    ViewBag.Title = "Пост";
+}
+
+<h1>@Html.DisplayFor(model => model.Title)</h1>
+
+<div class="row fg-gray">
+    <div><span class="mif-user"></span> @Html.DisplayFor(model => model.User.FullName)</div>
+    <div><span class="mif-calendar"></span> @Html.DisplayFor(model => model.Date)</div>
+
+    @{
+        // Список тегов
+        List<string> tagNames = new List<string>();
+        foreach (var i in Model.Tags) {
+            tagNames.Add(i.Name);
+        }
+
+        if (tagNames.Count > 0) {
+            <div><span class="mif-tags"></span> @string.Join(", ", tagNames)</div>
+        }
+    }
+</div>
+
+@if (Model.Text != null) {
+    <div class="content block-shadow">
+        @Html.Raw(ImgMarkup.Replace(Model.Text))
+    </div>
+}
+
+@{
+    <div style="margin: .625rem 0">
+        <div class="panel info">
+            <div class="heading">
+                <span class="icon mif-bubbles"></span>
+                <span class="title">Комментарии</span>
+            </div>
+            <div class="content padding10">
+                <div class="toolbar">
+                    @Ajax.ActionLink(
+                        "Показать",
+                        "_PartialCommentsToPost",
+                        new { id = Model.Id },
+                        new AjaxOptions() { UpdateTargetId = "comments" },
+                        new { @class = "button", id = "refresh-comments" }
+                    )
+                </div>
+
+                <div id="comments"></div>
+
+                @{
+                    // Форма ответа
+                    ViewBag.postId = Model.Id;
+                    @Html.Partial("~/Areas/Default/Views/Blog/_PartialCommentForm.cshtml", new Comments())
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Подзагружаем комментарии Ajax’ом
+            $("#refresh-comments").click(function () {
+                $(this).text("Обновить");
+            });
+        });
+    </script>
+}

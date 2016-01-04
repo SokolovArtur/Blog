@@ -1,0 +1,41 @@
+﻿@model Blog.Models.Comments
+
+@{
+    ViewBag.Title = "Удалить комментарий";
+}
+
+<h1>Удалить комментарий</h1>
+
+<big>Вы уверены, что хотите удалить комментарий?</big>
+
+<div class="row">
+    <dl class="horizontal">
+        <dt>@Html.DisplayNameFor(model => model.Date)</dt>
+        <dd>@Html.DisplayFor(model => model.Date)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.Comment)</dt>
+        <dd>@Html.DisplayFor(model => model.Comment)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.User)</dt>
+        <dd>@Html.DisplayFor(model => model.User.FullName)</dd>
+    </dl>
+</div>
+
+@using (Html.BeginForm())
+{
+    // Удалить комментарий может только администратор.
+    string disabledClass = (User.IsInRole("admin")) ? "" : "disabled";
+
+    @Html.ValidationSummary(true)
+
+    <div class="form-token">@Html.AntiForgeryToken()</div>
+
+    <div class="form-group">
+        <div class="input-control submit @disabledClass">
+            @Html.HiddenFor(model => model.Id)
+
+            <button type="submit" class="button primary">Удалить</button>
+            @Html.ActionLink("Назад", "Index", null, new { @class = "button link" })
+        </div>
+    </div>
+}

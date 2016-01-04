@@ -1,0 +1,49 @@
+﻿@model Blog.Areas.Auth.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Войти";
+}
+
+<div class="login-form padding20 block-shadow" id="account">
+    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+    {
+        <h1 class="text-light">Войти</h1>
+        <hr class="thin" />
+
+        @Html.ValidationSummary(true)
+
+        <div class="form-token">@Html.AntiForgeryToken()</div>
+
+        <div class="form-group">
+            <div class="input-control text full-size">
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email)
+            </div>
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "marker-on-top" })
+        </div>
+
+        <div class="form-group">
+            <div class="input-control password full-size">
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password)
+                <button class="button helper-button reveal"><span class="mif-looks"></span></button>
+            </div>
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "marker-on-top" })
+        </div>
+
+        <div class="form-group">
+            <label class="input-control checkbox">
+                @Html.CheckBoxFor(m => m.RememberMe)
+                <span class="check"></span>
+                <span class="caption">@Html.LabelFor(m => m.RememberMe)</span>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <div class="input-control submit">
+                <button type="submit" class="button primary">Войти</button>
+                @Html.RouteLink("Назад", "Blog_default", new { controller = "Blog", action = "Index" }, new { @class = "button link" })
+            </div>
+        </div>
+    }
+</div>

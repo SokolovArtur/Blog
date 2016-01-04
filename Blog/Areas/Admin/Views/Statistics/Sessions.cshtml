@@ -1,0 +1,42 @@
+﻿@model Blog.Areas.Admin.Models.CountSessionsOnTimeViewModel
+
+@{
+    ViewBag.Title = "Сеансы";
+}
+
+<h1>Сеансы</h1>
+
+<table class="table bordered hovered">
+    <thead>
+        <tr>
+            <th>Время</th>
+            <th>Количество</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>День</strong></td>
+            <td>@Model.Day</td>
+        </tr>
+        <tr>
+            <td><strong>Неделя</strong></td>
+            <td>@Model.Week</td>
+        </tr>
+        <tr>
+            <td><strong>Месяц</strong></td>
+            <td>@Model.Month</td>
+        </tr>
+        <tr>
+            <td><strong>Квартал</strong></td>
+            <td>@Model.Quarter</td>
+        </tr>
+        <tr>
+            <td><strong>Год</strong></td>
+            <td>@Model.Year</td>
+        </tr>
+        <tr>
+            <td><strong>Всего</strong></td>
+            <td>@Model.Total</td>
+        </tr>
+    </tbody>
+</table>

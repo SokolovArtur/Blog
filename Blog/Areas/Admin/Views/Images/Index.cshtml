@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Blog.Models.Images>
+
+@{
+    ViewBag.Title = "Изображения";
+}
+
+<h1>Изображения</h1>
+
+<div class="toolbar">
+    @Html.ActionLink("Загрузить", "Load", null, new { @class = "button" })
+</div>
+
+<div class="container">
+    @foreach (var item in Model) {
+        <div class="tile tile-large" style="cursor: default;">
+            <div class="tile-content bg-blue fg-white">
+                <div class="tile-content">
+                    @{
+                        string src = MvcApplication.BaseUrl + item.Name.TrimStart('/');
+                    }
+                    <img src="@src" data-role="fitImage" data-format="square">
+
+                    <span class="tile-badge bg-darkRed">@item.Id</span>
+                    <div class="tile-label">
+                        @if (item.Posts.Count == 0) {
+                            @Html.ActionLink("Удалить", "Delete", new { id = item.Id }, new { @class = "button danger" })
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="clear-float"></div>

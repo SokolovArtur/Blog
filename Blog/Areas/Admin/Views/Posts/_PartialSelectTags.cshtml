@@ -1,0 +1,11 @@
+﻿@model List<SelectListItem>
+
+@{
+    Layout = null;
+}
+
+<div class="form-group">
+    <div class="input-control select multiple">
+        @Html.ListBox("Tags", Model)
+    </div>
+</div>

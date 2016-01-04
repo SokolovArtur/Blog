@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNet.Identity;
+@using Blog.Models
+
+@model Posts
+
+@{
+    ViewBag.Title = "Удалить пост";
+}
+
+<h1>Удалить пост</h1>
+
+<big>Вы уверены, что хотите удалить пост?</big>
+
+<div class="row">
+    <dl class="horizontal">
+        <dt>@Html.DisplayNameFor(model => model.Date)</dt>
+        <dd>&#160;@Html.DisplayFor(model => model.Date)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.Title)</dt>
+        <dd>&#160;@Html.DisplayFor(model => model.Title)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.Text)</dt>
+        <dd>&#160;@Html.Raw(ImgMarkup.Replace(Model.Text))</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.User)</dt>
+        <dd>&#160;@Html.DisplayFor(model => model.User.FullName)</dd>
+
+        <dt>@Html.DisplayNameFor(model => model.Tags)</dt>
+        <dd>
+            @{
+                // Список тегов
+                List<string> tagNames = new List<string>();
+                foreach (var tag in Model.Tags) {
+                    tagNames.Add(tag.Name);
+                }
+            }
+            &#160;@string.Join(", ", tagNames)
+        </dd>
+    </dl>
+</div>
+
+@using (Html.BeginForm())
+{
+    // Редактор может удалить только свой пост, а администратор все.
+    string disabledClass = ((User.IsInRole("editor") && (Model.User.Id == User.Identity.GetUserId())) || User.IsInRole("admin")) ? "" : "disabled";
+
+    @Html.ValidationSummary(true)
+
+    <div class="form-token">@Html.AntiForgeryToken()</div>
+
+    <div class="form-group">
+        <div class="input-control submit @disabledClass">
+            @Html.HiddenFor(model => model.Id)
+
+            <button type="submit" class="button primary">Удалить</button>
+            @Html.ActionLink("Назад", "Index", null, new { @class = "button link" })
+        </div>
+    </div>
+}

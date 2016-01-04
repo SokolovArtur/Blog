@@ -1,0 +1,42 @@
+﻿@using PagedList.Mvc
+
+@model Blog.Areas.Default.Models.BlogViewModel
+
+@{
+    ViewBag.Title = "Блог";
+}
+
+<div class="container">
+    @foreach (var item in Model.PostsList) {
+        string tileCssClass = Model.TileCssClass(item.Title.Length);
+
+        <div class="tile @tileCssClass" style="cursor: default;">
+            <div class="tile-content bg-blue fg-white">
+                <div class="tile-heading">
+                    <span class="title">
+                        <a href="@Url.Action("Post", "Blog", new { id = item.Id })" class="fg-white">@Html.DisplayFor(modelItem => item.Title)</a>
+                    </span>
+                </div>
+                <div class="tile-label">
+                    <div><span class="mif-user"></span> @Html.DisplayFor(modelItem => item.User.FullName)</div>
+                    <div><span class="mif-calendar"></span> @Html.DisplayFor(modelItem => item.Date)</div>
+                    @{
+                        // Список тегов
+                        List<string> tagNames = new List<string>();
+                        foreach (var i in item.Tags) {
+                            tagNames.Add(i.Name);
+                        }
+
+                        if (tagNames.Count > 0) {
+                            <div><span class="mif-tags"></span> @string.Join(", ", tagNames)</div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="clear-float"></div>
+
+@Html.PagedListPager(Model.PostsList, page => Url.Action("Index", new { page }))

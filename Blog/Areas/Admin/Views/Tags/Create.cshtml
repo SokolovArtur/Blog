@@ -1,0 +1,29 @@
+﻿@model Blog.Models.Tags
+
+@{
+    ViewBag.Title = "Создать тег";
+}
+
+<h1>Создать тег</h1>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-token">@Html.AntiForgeryToken()</div>
+
+    <div class="form-group">
+        <div class="input-control text">
+            @Html.LabelFor(model => model.Name)
+            @Html.EditorFor(model => model.Name)
+        </div>
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+
+    <div class="form-group">
+        <div class="input-control submit">
+            <button type="submit" class="button primary">Создать</button>
+            @Html.ActionLink("Назад", "Index", null, new { @class = "button link" })
+        </div>
+    </div>
+}

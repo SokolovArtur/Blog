@@ -1,0 +1,47 @@
+﻿@model Blog.Models.Posts
+
+@{
+    ViewBag.Title = "Создать пост";
+}
+
+<h1>Создать пост</h1>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <div class="form-token">@Html.AntiForgeryToken()</div>
+
+    <div class="form-group">
+        <div class="input-control text" data-role="datepicker">
+            @Html.LabelFor(model => model.Date)
+            @Html.EditorFor(model => model.Date, new { htmlAttributes = new { style = "border-color: #9a1616;" } })
+        </div>
+        @Html.ValidationMessageFor(model => model.Date)
+    </div>
+
+    <div class="form-group">
+        <div class="input-control text">
+            @Html.LabelFor(model => model.Title)
+            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { style = "border-color: #9a1616;" } })
+        </div>
+        @Html.ValidationMessageFor(model => model.Title)
+    </div>
+
+    <div class="form-group">
+        <div class="input-control textarea">
+            @Html.LabelFor(model => model.Text)
+            @Html.EditorFor(model => model.Text, new { htmlAttributes = new { style = "resize: none;" } })
+        </div>
+        @Html.ValidationMessageFor(model => model.Text)
+    </div>
+    
+    @Html.Action("_PartialSelectTags", "Posts")
+
+    <div class="form-group">
+        <div class="input-control submit">
+            <button type="submit" class="button primary">Создать</button>
+            @Html.ActionLink("Назад", "Index", null, new { @class = "button link" })
+        </div>
+    </div>
+}

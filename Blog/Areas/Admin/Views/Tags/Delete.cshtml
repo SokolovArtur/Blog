@@ -1,0 +1,35 @@
+﻿@model Blog.Models.Tags
+
+@{
+    ViewBag.Title = "Удалить тег";
+}
+
+<h1>Удалить тег</h1>
+
+<big>Вы уверены, что хотите удалить тег?</big>
+
+<div class="row">
+    <dl class="horizontal">
+        <dt>@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd>@Html.DisplayFor(model => model.Name)</dd>
+    </dl>
+</div>
+
+@using (Html.BeginForm())
+{
+    // Если тег используется, то его нельзя удалить.
+    string disabledClass = (Model.Posts.Count > 0) ? "disabled" : "";
+
+    @Html.ValidationSummary(true)
+
+    <div class="form-token">@Html.AntiForgeryToken()</div>
+
+    <div class="form-group">
+        <div class="input-control submit @disabledClass">
+            @Html.HiddenFor(model => model.Id)
+
+            <button type="submit" class="button primary">Удалить</button>
+            @Html.ActionLink("Назад", "Index", null, new { @class = "button link" })
+        </div>
+    </div>
+}

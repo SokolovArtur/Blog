@@ -1,0 +1,90 @@
+﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using Blog.DAL;
+@using Blog.Models;
+
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+    var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
+    ApplicationUser user = userManager.FindByName(User.Identity.Name);
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+
+    @Styles.Render("~/bundles/metro")
+    @Styles.Render("~/Content/styles.css")
+</head>
+<body>
+    <header class="app-bar" data-role="appbar">
+        <div class="container">
+            @Html.RouteLink("Blog on ASP.NET", "Blog_default", new { controller = "Blog", action = "Index" }, new { @class = "app-bar-element branding" })
+
+            @if (User.IsInRole("editor") || User.IsInRole("admin")) {
+                <ul class="app-bar-menu">
+                    <li>@Html.ActionLink("Посты", "Index", "Posts")</li>
+                    <li>@Html.ActionLink("Комментарии", "Index", "Comments")</li>
+                    <li>@Html.ActionLink("Изображения", "Index", "Images")</li>
+                    <li>@Html.ActionLink("Теги", "Index", "Tags")</li>
+                </ul>
+            }
+
+            @if (User.IsInRole("admin")) {
+                <ul class="app-bar-menu">
+                    <li>
+                        <a href="#" class="dropdown-toggle">Статистика</a>
+                        <ul class="d-menu" data-role="dropdown">
+                            <li>@Html.ActionLink("Просмотры страниц", "Visits", "Statistics")</li>
+                            <li>@Html.ActionLink("Сеансы", "Sessions", "Statistics")</li>
+                        </ul>
+                    </li>
+                </ul>
+            }
+
+            <ul class="app-bar-menu place-right">
+                <li class="no-flexible">
+                    <a href="#" class="dropdown-toggle">@user.FullName</a>
+                    <ul class="d-menu" data-role="dropdown">
+                        <li>@Html.RouteLink("Сайт", "Blog_default", new { controller = "Blog", action = "Index" })</li>
+                        <li class="divider"></li>
+                        <li>@Html.RouteLink("Выйти", "Auth_default", new { controller = "Account", action = "LogOff" })</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="container page-content">
+        @RenderBody()
+    </div>
+
+    <footer class="app-bar">
+        <div class="container">
+            <p class="align-center">
+                &copy; Соколов А.В.,
+                @{
+                    const int PublicationYear = 2015;
+                    int currentYear = DateTime.Today.Year;
+
+                    @PublicationYear
+
+                    if (currentYear > PublicationYear) {
+                        <text> - </text>
+                        @currentYear
+                    }
+                }
+            </p>
+        </div>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/validate")
+    @Scripts.Render("~/bundles/widgets")
+    @Scripts.Render("~/Scripts/scripts.js")
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

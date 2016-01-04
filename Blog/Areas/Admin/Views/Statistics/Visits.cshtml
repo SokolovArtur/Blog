@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Blog.Areas.Admin.Models.CountVisitsViewModel>
+
+@{
+    ViewBag.Title = "Просмотры страниц";
+}
+
+<h1>Просмотры страниц</h1>
+
+<div class="toolbar">
+    @Html.ActionLink("День", "Visits", "Statistics", new { days = 1 }, new { @class = "button" })
+    @Html.ActionLink("Неделя", "Visits", "Statistics", new { days = 7 }, new { @class = "button" })
+    @Html.ActionLink("Месяц", "Visits", "Statistics", new { days = 30 }, new { @class = "button" })
+    @Html.ActionLink("Квартал", "Visits", "Statistics", new { days = 91 }, new { @class = "button" })
+    @Html.ActionLink("Год", "Visits", "Statistics", new { days = 365 }, new { @class = "button" })
+    @Html.ActionLink("Всего", "Visits", "Statistics", null, new { @class = "button" })
+</div>
+
+<table class="table bordered hovered" data-role="datatable">
+    <thead>
+        <tr>
+            <th>Страница</th>
+            <th>Просмотров</th>
+            <th>Уникальных просмотров</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var modelItem in Model) {
+            <tr>
+                <td>@modelItem.Url</td>
+                <td>@modelItem.CountVisits</td>
+                <td>@modelItem.CountUniqueVisits</td>
+            </tr>
+        }
+    </tbody>
+</table>

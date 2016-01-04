@@ -1,0 +1,15 @@
+﻿@model ICollection<Blog.Models.Comments>
+
+@{
+    Layout = null;
+}
+
+@foreach (var item in Model) {
+    <div class="example">
+        <div class="row fg-gray" style="font-size: small;">
+            <div><span class="mif-user"></span> @Html.DisplayFor(modelItem => item.User.FullName)</div>
+            <div><span class="mif-calendar"></span> @Html.DisplayFor(modelItem => item.Date)</div>
+        </div>
+        @Html.DisplayFor(modelItem => item.Comment)
+    </div>
+}

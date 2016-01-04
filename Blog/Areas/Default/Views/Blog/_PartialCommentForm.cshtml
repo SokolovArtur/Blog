@@ -1,0 +1,33 @@
+﻿@model Blog.Models.Comments
+
+@{
+    Layout = null;
+}
+
+@if (User.IsInRole("user")) {
+    using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        <div class="form-token">@Html.AntiForgeryToken()</div>
+
+        <div class="form-group">
+            <div class="input-control textarea">
+                @Html.LabelFor(model => model.Comment)
+                @Html.EditorFor(model => model.Comment, new { htmlAttributes = new { style = "resize: none; border-color: #9a1616;" } })
+            </div>
+            @Html.ValidationMessageFor(model => model.Comment)
+        </div>
+
+        <div class="form-group">
+            <div class="input-control submit">
+                @Html.Hidden("id", (object)ViewBag.postId)
+                <button type="submit" class="button primary">Ответить</button>
+            </div>
+        </div>
+    }
+} else {
+    <div class="notify alert">
+        <span class="notify-text">Комментарии могут оставлять только зарегистрированные пользователи.</span>
+    </div>
+}

@@ -1,0 +1,39 @@
+﻿@model Blog.Models.Images
+
+@{
+    ViewBag.Title = "Удалить изображение";
+}
+
+<h1>Удалить изображение</h1>
+
+<big>Вы уверены, что хотите удалить изображение?</big>
+
+<div class="grid">
+    <div class="row cells3">
+        <div class="cell">
+            @{
+                string src = MvcApplication.BaseUrl + Model.Name.TrimStart('/');
+            }
+            <img src="@src" data-role="fitImage" data-format="square">
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    // Если изображение используется, то его нельзя удалить.
+    string disabledClass = (Model.Posts.Count > 0) ? "disabled" : "";
+
+    @Html.ValidationSummary(true)
+
+    <div class="form-token">@Html.AntiForgeryToken()</div>
+
+    <div class="form-group">
+        <div class="input-control submit @disabledClass">
+            @Html.HiddenFor(model => model.Id)
+
+            <button type="submit" class="button primary">Удалить</button>
+            @Html.ActionLink("Назад", "Index", null, new { @class = "button link" })
+        </div>
+    </div>
+}
